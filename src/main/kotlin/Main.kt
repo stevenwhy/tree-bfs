@@ -9,8 +9,29 @@ fun main() {
     println("Level order traversal ${levelOrderTraverse(root)}")
     println("Reverse level order traversal ${reverseLevelOrderTraverse(root)}")
     println("Zig Zag level order traversal ${zigZagTraverse(root)}")
+    println("Average of level order traversal ${averageOfLevels(root)}")
 }
 
+fun averageOfLevels(root: TreeNode): MutableList<Double> {
+    val result = mutableListOf<Double>()
+
+    val queue: Queue<TreeNode> = LinkedList()
+    queue.add(root)
+    while(queue.isNotEmpty()) {
+        var sum = 0.0
+        val size = queue.size
+        var i = 0
+        while(i < size) {
+            val node = queue.remove()
+            if(node.left != null) queue.add(node.left)
+            if(node.right != null) queue.add(node.right)
+            sum += node.value
+            i++
+        }
+        result.add(sum/size)
+    }
+    return result
+}
 fun zigZagTraverse(root: TreeNode): MutableList<List<Int>> {
     val result = mutableListOf<List<Int>>()
 
