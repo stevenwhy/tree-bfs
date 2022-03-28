@@ -3,13 +3,38 @@ import java.util.*
 fun main() {
 
     println("#1 Binary Tree Level Order Traversal -----------------")
-    val root = TreeNode(12)
-    root.left = TreeNode(7, left = TreeNode(9))
-    root.right = TreeNode(1, left = TreeNode(10), right = TreeNode(5))
+    val root = TreeNode(1)
+    root.left = TreeNode(2, left = TreeNode(4), right = TreeNode(5))
+    root.right = TreeNode(3, left = TreeNode(6), right = TreeNode(7))
     println("Level order traversal ${levelOrderTraverse(root)}")
     println("Reverse level order traversal ${reverseLevelOrderTraverse(root)}")
+    println("Zig Zag level order traversal ${zigZagTraverse(root)}")
 }
 
+fun zigZagTraverse(root: TreeNode): MutableList<List<Int>> {
+    val result = mutableListOf<List<Int>>()
+
+    val queue: Deque<TreeNode> = LinkedList()
+    queue.add(root)
+    var invert = false
+    while(queue.isNotEmpty()) {
+        val arr: ArrayDeque<Int> = ArrayDeque()
+        val size = queue.size
+        var i = 0
+        while(i < size) {
+            val node = queue.remove()
+            if(invert) arr.addFirst(node.value)
+            else arr.addLast(node.value)
+
+            if(node.left != null) queue.add(node.left)
+            if(node.right != null) queue.add(node.right)
+            i++
+        }
+        invert = !invert
+        result.add(arr.toList())
+    }
+    return result
+}
 fun reverseLevelOrderTraverse(root: TreeNode): Deque<List<Int>> {
     val result: Deque<List<Int>> = LinkedList()
 
