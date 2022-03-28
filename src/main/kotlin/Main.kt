@@ -10,8 +10,32 @@ fun main() {
     println("Reverse level order traversal ${reverseLevelOrderTraverse(root)}")
     println("Zig Zag level order traversal ${zigZagTraverse(root)}")
     println("Average of level order traversal ${averageOfLevels(root)}")
+    println("Minimum depth ${minimumDepth(root)}")
 }
 
+fun minimumDepth(root: TreeNode): Int {
+    val queue: Queue<TreeNode> = LinkedList()
+    queue.add(root)
+    var depth = 0
+    var endReached = false
+    while(queue.isNotEmpty() && !endReached) {
+        val size = queue.size
+        var i = 0
+        depth += 1
+        while(i < size) {
+            val node = queue.remove()
+            if(node.left == null || node.right == null) {
+                endReached = true
+                break
+            }
+
+            if(node.left != null) queue.add(node.left)
+            if(node.right != null) queue.add(node.right)
+            i++
+        }
+    }
+    return depth
+}
 fun averageOfLevels(root: TreeNode): MutableList<Double> {
     val result = mutableListOf<Double>()
 
