@@ -11,8 +11,35 @@ fun main() {
     println("Zig Zag level order traversal ${zigZagTraverse(root)}")
     println("Average of level order traversal ${averageOfLevels(root)}")
     println("Minimum depth ${minimumDepth(root)}")
+    println("Find level order successor ${levelOrderSuccessor(root, 3)}")
+    println("Find level order successor ${levelOrderSuccessor(root, 4)}")
+    println("Find level order successor ${levelOrderSuccessor(root, 12)}")
 }
+fun levelOrderSuccessor(root: TreeNode, target: Int): Int? {
+    val levels = mutableListOf<List<Int>>()
 
+    val queue: Queue<TreeNode> = LinkedList()
+    queue.add(root)
+
+    while(queue.isNotEmpty()) {
+        val level = ArrayDeque<Int>()
+        val size = queue.size
+        var i = 0
+        while(i < size) {
+            val node = queue.remove()
+            if(node.value == target) {
+                if(level.isNotEmpty()) return level.last
+                else return levels.last().last()
+            }
+            level.add(node.value)
+            if(node.left != null) queue.add(node.left)
+            if(node.right != null) queue.add(node.right)
+            i++
+        }
+        levels.add(level.toList())
+    }
+    return null
+}
 fun minimumDepth(root: TreeNode): Int {
     val queue: Queue<TreeNode> = LinkedList()
     queue.add(root)
