@@ -1,4 +1,5 @@
 import java.util.*
+import kotlin.math.max
 
 fun main() {
 
@@ -14,7 +15,33 @@ fun main() {
     println("Find level order successor ${levelOrderSuccessor(root, 3)}")
     println("Find level order successor ${levelOrderSuccessor(root, 4)}")
     println("Find level order successor ${levelOrderSuccessor(root, 12)}")
+
+    println("Find largest number in level: ${findLargestValueInEachLevel(root)}")
 }
+
+fun findLargestValueInEachLevel(root: TreeNode) : MutableList<Int> {
+    val result = mutableListOf<Int>()
+
+    val queue: Queue<TreeNode> = LinkedList()
+    queue.add(root)
+    while(queue.isNotEmpty()) {
+        val levelSize = queue.size
+        var i = 0
+        var max = -1
+        while(i < levelSize) {
+            val currentNode = queue.poll()
+            if(currentNode.left != null) queue.add(currentNode.left)
+            if(currentNode.right != null) queue.add(currentNode.right)
+            max = max(max, currentNode.value)
+            i++
+        }
+        result.add(max)
+    }
+    return result
+}
+
+
+
 fun levelOrderSuccessor(root: TreeNode, target: Int): Int? {
     val levels = mutableListOf<List<Int>>()
 
